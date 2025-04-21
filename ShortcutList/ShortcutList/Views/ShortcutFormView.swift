@@ -21,6 +21,7 @@ struct ShortcutFormView: View {
                 }
             }
             .padding(.horizontal, 20)
+            .padding(.vertical, 10)
             .navigationTitle("ショートカットの追加")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
