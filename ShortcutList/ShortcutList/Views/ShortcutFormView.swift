@@ -36,7 +36,8 @@ struct ShortcutFormView: View {
                 }
             }
         }
-        .frame(minWidth: 500, minHeight: 300)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private var isFormValid: Bool {
