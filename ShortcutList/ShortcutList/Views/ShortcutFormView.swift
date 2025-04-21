@@ -20,6 +20,7 @@ struct ShortcutFormView: View {
                     TextField("ショートカットキー (例: ⌘ + C)", text: $shortcutKey)
                 }
             }
+            .padding(.horizontal, 20)
             .navigationTitle("ショートカットの追加")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
