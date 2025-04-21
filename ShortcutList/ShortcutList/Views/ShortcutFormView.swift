@@ -36,6 +36,7 @@ struct ShortcutFormView: View {
                 }
             }
         }
+        .frame(minWidth: 500, minHeight: 300)
     }
     
     private var isFormValid: Bool {
