@@ -14,10 +14,10 @@
 		1A2B3C4D5E6F7890ABCDEF09 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F7890ABCDEF10 /* FileManager.swift */; };
 		1A2B3C4D5E6F7890ABCDEF11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F7890ABCDEF12 /* Assets.xcassets */; };
 		1A2B3C4D5E6F7890ABCDEF13 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F7890ABCDEF14 /* Preview Assets.xcassets */; };
+		E9A4A8142DB68F6C004D4846 /* ShortcutListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A4A8132DB68F6C004D4846 /* ShortcutListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1A2B3C4D5E6F7890ABCDEF15 /* ShortcutList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortcutList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2B3C4D5E6F7890ABCDEF02 /* ShortcutListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListApp.swift; sourceTree = "<group>"; };
 		1A2B3C4D5E6F7890ABCDEF04 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1A2B3C4D5E6F7890ABCDEF06 /* ShortcutFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutFormView.swift; sourceTree = "<group>"; };
@@ -25,7 +25,9 @@
 		1A2B3C4D5E6F7890ABCDEF10 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		1A2B3C4D5E6F7890ABCDEF12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A2B3C4D5E6F7890ABCDEF14 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1A2B3C4D5E6F7890ABCDEF15 /* ShortcutList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortcutList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2B3C4D5E6F7890ABCDEF16 /* ShortcutList.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShortcutList.entitlements; sourceTree = "<group>"; };
+		E9A4A8132DB68F6C004D4846 /* ShortcutListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,14 +49,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		1A2B3C4D5E6F7890ABCDEF20 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1A2B3C4D5E6F7890ABCDEF15 /* ShortcutList.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		1A2B3C4D5E6F7890ABCDEF19 /* ShortcutList */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,12 +63,12 @@
 			path = ShortcutList;
 			sourceTree = "<group>";
 		};
-		1A2B3C4D5E6F7890ABCDEF24 /* Preview Content */ = {
+		1A2B3C4D5E6F7890ABCDEF20 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1A2B3C4D5E6F7890ABCDEF14 /* Preview Assets.xcassets */,
+				1A2B3C4D5E6F7890ABCDEF15 /* ShortcutList.app */,
 			);
-			path = "Preview Content";
+			name = Products;
 			sourceTree = "<group>";
 		};
 		1A2B3C4D5E6F7890ABCDEF21 /* Models */ = {
@@ -90,6 +84,7 @@
 			children = (
 				1A2B3C4D5E6F7890ABCDEF04 /* ContentView.swift */,
 				1A2B3C4D5E6F7890ABCDEF06 /* ShortcutFormView.swift */,
+				E9A4A8132DB68F6C004D4846 /* ShortcutListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -100,6 +95,14 @@
 				1A2B3C4D5E6F7890ABCDEF10 /* FileManager.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F7890ABCDEF24 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F7890ABCDEF14 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +180,7 @@
 				1A2B3C4D5E6F7890ABCDEF07 /* Shortcut.swift in Sources */,
 				1A2B3C4D5E6F7890ABCDEF09 /* FileManager.swift in Sources */,
 				1A2B3C4D5E6F7890ABCDEF01 /* ShortcutListApp.swift in Sources */,
+				E9A4A8142DB68F6C004D4846 /* ShortcutListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,20 +358,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1A2B3C4D5E6F7890ABCDEF30 /* Build configuration list for PBXProject "ShortcutList" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1A2B3C4D5E6F7890ABCDEF31 /* Debug */,
-				1A2B3C4D5E6F7890ABCDEF32 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1A2B3C4D5E6F7890ABCDEF26 /* Build configuration list for PBXNativeTarget "ShortcutList" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1A2B3C4D5E6F7890ABCDEF33 /* Debug */,
 				1A2B3C4D5E6F7890ABCDEF34 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A2B3C4D5E6F7890ABCDEF30 /* Build configuration list for PBXProject "ShortcutList" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A2B3C4D5E6F7890ABCDEF31 /* Debug */,
+				1A2B3C4D5E6F7890ABCDEF32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
