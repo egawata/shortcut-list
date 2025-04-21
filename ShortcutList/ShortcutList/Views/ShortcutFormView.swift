@@ -3,18 +3,18 @@ import SwiftUI
 struct ShortcutFormView: View {
     @ObservedObject var shortcutStore: ShortcutStore
     @Environment(\.dismiss) private var dismiss
-    
+
     @State private var applicationName = ""
     @State private var featureDescription = ""
     @State private var shortcutKey = ""
-    
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("アプリケーション情報")) {
                     TextField("アプリケーション名", text: $applicationName)
                 }
-                
+
                 Section(header: Text("ショートカット情報")) {
                     TextField("機能の説明", text: $featureDescription)
                     TextField("ショートカットキー (例: ⌘ + C)", text: $shortcutKey)
@@ -27,7 +27,7 @@ struct ShortcutFormView: View {
                         dismiss()
                     }
                 }
-                
+
                 ToolbarItem(placement: .confirmationAction) {
                     Button("保存") {
                         saveShortcut()
@@ -36,19 +36,20 @@ struct ShortcutFormView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+
     private var isFormValid: Bool {
         !applicationName.isEmpty && !featureDescription.isEmpty && !shortcutKey.isEmpty
     }
-    
+
     private func saveShortcut() {
         let newShortcut = Shortcut(
             applicationName: applicationName,
             featureDescription: featureDescription,
             shortcutKey: shortcutKey
         )
-        
+
         shortcutStore.addShortcut(newShortcut)
         dismiss()
     }
