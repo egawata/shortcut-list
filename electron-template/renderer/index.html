@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ショートカットリスト</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ショートカットリスト</h1>
+      <div class="header-actions">
+        <button id="add-shortcut-btn">ショートカットを追加</button>
+        <button id="change-save-location-btn">保存先を変更</button>
+      </div>
+    </header>
+    
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="検索...">
+      <div class="search-scope">
+        <label>
+          <input type="radio" name="search-scope" value="all" checked> すべて
+        </label>
+        <label>
+          <input type="radio" name="search-scope" value="app"> アプリケーション名
+        </label>
+        <label>
+          <input type="radio" name="search-scope" value="feature"> 機能
+        </label>
+      </div>
+    </div>
+    
+    <div class="shortcuts-container">
+      <table id="shortcuts-table">
+        <thead>
+          <tr>
+            <th>アプリケーション</th>
+            <th>機能</th>
+            <th>ショートカット</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="shortcuts-list">
+          <!-- ショートカットリストがここに表示されます -->
+        </tbody>
+      </table>
+    </div>
+    
+    <div id="shortcut-form" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>ショートカットを追加</h2>
+        <form id="add-form">
+          <div class="form-group">
+            <label for="app-name">アプリケーション名:</label>
+            <input type="text" id="app-name" required>
+          </div>
+          <div class="form-group">
+            <label for="feature-desc">機能の説明:</label>
+            <input type="text" id="feature-desc" required>
+          </div>
+          <div class="form-group">
+            <label for="shortcut-key">ショートカットキー:</label>
+            <input type="text" id="shortcut-key" placeholder="例: ⌘ + C" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit">保存</button>
+            <button type="button" class="cancel-btn">キャンセル</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script src="renderer.js"></script>
+</body>
+</html>
