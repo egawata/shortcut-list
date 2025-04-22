@@ -11,6 +11,10 @@ struct ShortcutFormView: View {
     @State private var shortcutKey = ""
     @FocusState private var focusedField: Field?
     
+    @State private var showSuggestions = false
+    @State private var suggestions: [String] = []
+    @State private var selectedSuggestionIndex: Int? = nil
+    
     enum Field {
         case appName, featureDesc, shortcutKey, saveButton
     }
@@ -19,8 +23,32 @@ struct ShortcutFormView: View {
         NavigationStack {
             Form {
                 Section(header: Text("アプリケーション情報")) {
-                    TextField("アプリケーション名", text: $applicationName)
-                        .focused($focusedField, equals: .appName)
+                    VStack(alignment: .leading, spacing: 0) {
+                        TextField("アプリケーション名", text: $applicationName)
+                            .focused($focusedField, equals: .appName)
+                            .onChange(of: applicationName) { newValue in
+                                updateSuggestions(for: newValue)
+                            }
+                            .onSubmit {
+                                if let selectedIndex = selectedSuggestionIndex, selectedIndex >= 0 && selectedIndex < suggestions.count {
+                                    applicationName = suggestions[selectedIndex]
+                                    showSuggestions = false
+                                    selectedSuggestionIndex = nil
+                                }
+                            }
+                            .onKeyPress(.downArrow) {
+                                handleDownArrow()
+                                return .handled
+                            }
+                            .onKeyPress(.upArrow) {
+                                handleUpArrow()
+                                return .handled
+                            }
+                        
+                        if showSuggestions && !suggestions.isEmpty {
+                            suggestionList
+                        }
+                    }
                 }
 
                 Section(header: Text("ショートカット情報")) {
@@ -67,10 +95,78 @@ struct ShortcutFormView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear {
+            focusedField = .appName
+        }
+        .onChange(of: focusedField) { newValue in
+            if newValue != .appName {
+                hideDropdown()
+            }
+        }
     }
 
     private var isFormValid: Bool {
         !applicationName.isEmpty && !featureDescription.isEmpty && !shortcutKey.isEmpty
+    }
+    
+    private var suggestionList: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(suggestions.indices, id: \.self) { index in
+                Text(suggestions[index])
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(selectedSuggestionIndex == index ? Color.blue.opacity(0.2) : Color.clear)
+                    .onTapGesture {
+                        applicationName = suggestions[index]
+                        hideDropdown()
+                    }
+            }
+        }
+        .background(Color(.textBackgroundColor))
+        .cornerRadius(4)
+        .overlay(
+            RoundedRectangle(cornerRadius: 4)
+                .stroke(Color.gray, lineWidth: 0.5)
+        )
+        .padding(.top, 2)
+    }
+    
+    private func updateSuggestions(for text: String) {
+        if text.isEmpty {
+            suggestions = []
+            showSuggestions = false
+            selectedSuggestionIndex = nil
+        } else {
+            suggestions = shortcutStore.getApplicationNameSuggestions(forPrefix: text)
+            showSuggestions = !suggestions.isEmpty
+            selectedSuggestionIndex = nil
+        }
+    }
+    
+    private func hideDropdown() {
+        showSuggestions = false
+        selectedSuggestionIndex = nil
+    }
+    
+    private func handleDownArrow() {
+        if showSuggestions && !suggestions.isEmpty {
+            if let currentIndex = selectedSuggestionIndex {
+                selectedSuggestionIndex = currentIndex < suggestions.count - 1 ? currentIndex + 1 : nil
+            } else {
+                selectedSuggestionIndex = 0
+            }
+        }
+    }
+    
+    private func handleUpArrow() {
+        if showSuggestions && !suggestions.isEmpty {
+            if let currentIndex = selectedSuggestionIndex {
+                selectedSuggestionIndex = currentIndex > 0 ? currentIndex - 1 : nil
+            } else {
+                selectedSuggestionIndex = suggestions.count - 1
+            }
+        }
     }
 
     private func saveShortcut() {
@@ -177,6 +273,16 @@ struct KeyEventHandlingView: NSViewRepresentable {
         override func keyDown(with event: NSEvent) -> Void {
             if event.keyCode == 48 { // Tabキーのキーコード
                 onTab?()
+                return
+            }
+            
+            if event.modifierFlags.contains(.control) && event.charactersIgnoringModifiers == "n" {
+                NSApp.sendAction(#selector(NSResponder.moveDown(_:)), to: nil, from: self)
+                return
+            }
+            
+            if event.modifierFlags.contains(.control) && event.charactersIgnoringModifiers == "p" {
+                NSApp.sendAction(#selector(NSResponder.moveUp(_:)), to: nil, from: self)
                 return
             }
             
