@@ -165,6 +165,16 @@ struct KeyEventHandlingView: NSViewRepresentable {
                 keys.append("⌃")
             }
             
+            if isFunctionKey(event.keyCode) {
+                let functionKeyNumber = functionKeyNumber(from: event.keyCode)
+                if functionKeyNumber > 0 {
+                    keys.append("F\(functionKeyNumber)")
+                    text = keys.joined(separator: " + ")
+                    onTextChange?(text)
+                }
+                return
+            }
+            
             if let character = event.charactersIgnoringModifiers?.uppercased(), !character.isEmpty {
                 let isNumpadKey = isNumpadKeyCode(event.keyCode)
                 
@@ -182,7 +192,38 @@ struct KeyEventHandlingView: NSViewRepresentable {
         }
         
         private func isNumpadKeyCode(_ keyCode: UInt16) -> Bool {
-            return (keyCode >= 82 && keyCode <= 92)
+            return (keyCode >= 82 && keyCode <= 92) || keyCode == 65 || keyCode == 67 || keyCode == 69 || keyCode == 75 || keyCode == 78 || keyCode == 81 || keyCode == 76
+        }
+        
+        private func isFunctionKey(_ keyCode: UInt16) -> Bool {
+            let functionKeyCodes: Set<UInt16> = [122, 120, 99, 118, 96, 97, 98, 100, 101, 109, 103, 111, 105, 107, 113, 106, 64, 79, 80, 90]
+            return functionKeyCodes.contains(keyCode)
+        }
+        
+        private func functionKeyNumber(from keyCode: UInt16) -> Int {
+            switch keyCode {
+            case 122: return 1  // F1
+            case 120: return 2  // F2
+            case 99:  return 3  // F3
+            case 118: return 4  // F4
+            case 96:  return 5  // F5
+            case 97:  return 6  // F6
+            case 98:  return 7  // F7
+            case 100: return 8  // F8
+            case 101: return 9  // F9
+            case 109: return 10 // F10
+            case 103: return 11 // F11
+            case 111: return 12 // F12
+            case 105: return 13 // F13
+            case 107: return 14 // F14
+            case 113: return 15 // F15
+            case 106: return 16 // F16
+            case 64:  return 17 // F17
+            case 79:  return 18 // F18
+            case 80:  return 19 // F19
+            case 90:  return 20 // F20
+            default:  return 0
+            }
         }
     }
     
