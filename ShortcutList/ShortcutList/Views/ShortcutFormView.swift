@@ -27,17 +27,22 @@ struct ShortcutFormView: View {
                     TextField("機能の説明", text: $featureDescription)
                         .focused($focusedField, equals: .featureDesc)
                     
-                    ZStack(alignment: .leading) {
-                        if shortcutKey.isEmpty {
-                            Text("ショートカットキー (例: ⌘ + C)")
-                                .foregroundColor(Color(.placeholderTextColor))
+                    HStack(alignment: .center) {
+                        Text("ショートカットキー")
+                            .frame(width: 100, alignment: .leading)
+                        
+                        ZStack(alignment: .leading) {
+                            if shortcutKey.isEmpty {
+                                Text("例: ⌘ + C")
+                                    .foregroundColor(Color(.placeholderTextColor))
+                            }
+                            KeyEventHandlingView(text: $shortcutKey, onTab: {
+                                focusedField = .saveButton
+                            })
+                            .frame(height: 22)
+                            .background(Color(.textBackgroundColor))
+                            .cornerRadius(4)
                         }
-                        KeyEventHandlingView(text: $shortcutKey, onTab: {
-                            focusedField = .saveButton
-                        })
-                        .frame(height: 22)
-                        .background(Color(.textBackgroundColor))
-                        .cornerRadius(4)
                     }
                     .padding(.vertical, 4)
                 }
@@ -83,6 +88,7 @@ struct ShortcutFormView: View {
 struct KeyEventHandlingView: NSViewRepresentable {
     @Binding var text: String
     var onTab: () -> Void
+    @State private var isFocused: Bool = false
     
     class KeyEventHandlingNSView: NSView {
         var text: String = "" {
@@ -90,14 +96,34 @@ struct KeyEventHandlingView: NSViewRepresentable {
                 needsDisplay = true
             }
         }
+        var isFocused: Bool = false {
+            didSet {
+                needsDisplay = true
+            }
+        }
         var onTextChange: ((String) -> Void)?
         var onTab: (() -> Void)?
+        var onFocusChange: ((Bool) -> Void)?
         
         override var acceptsFirstResponder: Bool { true }
         
         override func viewDidMoveToWindow() {
             super.viewDidMoveToWindow()
             window?.makeFirstResponder(self)
+        }
+        
+        override func becomeFirstResponder() -> Bool {
+            let result = super.becomeFirstResponder()
+            isFocused = true
+            onFocusChange?(true)
+            return result
+        }
+        
+        override func resignFirstResponder() -> Bool {
+            let result = super.resignFirstResponder()
+            isFocused = false
+            onFocusChange?(false)
+            return result
         }
         
         override func draw(_ dirtyRect: NSRect) {
@@ -107,8 +133,12 @@ struct KeyEventHandlingView: NSViewRepresentable {
             let path = NSBezierPath(roundedRect: bounds, xRadius: 4, yRadius: 4)
             path.fill()
             
-            NSColor.separatorColor.setStroke()
-            path.lineWidth = 1
+            if isFocused {
+                NSColor.keyboardFocusIndicatorColor.setStroke()
+            } else {
+                NSColor.separatorColor.setStroke()
+            }
+            path.lineWidth = isFocused ? 2 : 1
             path.stroke()
             
             if !text.isEmpty {
@@ -193,13 +223,20 @@ struct KeyEventHandlingView: NSViewRepresentable {
                 self.text = newText
             }
         }
+        view.onFocusChange = { isFocused in
+            DispatchQueue.main.async {
+                self.isFocused = isFocused
+            }
+        }
         view.onTab = onTab
         view.text = text
+        view.isFocused = isFocused
         return view
     }
     
     func updateNSView(_ nsView: KeyEventHandlingNSView, context: Context) {
         nsView.text = text
+        nsView.isFocused = isFocused
     }
 }
 
