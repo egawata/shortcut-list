@@ -85,7 +85,11 @@ struct KeyEventHandlingView: NSViewRepresentable {
     var onTab: () -> Void
     
     class KeyEventHandlingNSView: NSView {
-        var text: String = ""
+        var text: String = "" {
+            didSet {
+                needsDisplay = true
+            }
+        }
         var onTextChange: ((String) -> Void)?
         var onTab: (() -> Void)?
         
@@ -94,6 +98,45 @@ struct KeyEventHandlingView: NSViewRepresentable {
         override func viewDidMoveToWindow() {
             super.viewDidMoveToWindow()
             window?.makeFirstResponder(self)
+        }
+        
+        override func draw(_ dirtyRect: NSRect) {
+            super.draw(dirtyRect)
+            
+            NSColor.textBackgroundColor.setFill()
+            let path = NSBezierPath(roundedRect: bounds, xRadius: 4, yRadius: 4)
+            path.fill()
+            
+            NSColor.separatorColor.setStroke()
+            path.lineWidth = 1
+            path.stroke()
+            
+            if !text.isEmpty {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .left
+                
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .font: NSFont.systemFont(ofSize: NSFont.systemFontSize),
+                    .foregroundColor: NSColor.textColor,
+                    .paragraphStyle: paragraphStyle
+                ]
+                
+                let textRect = NSRect(x: 5, y: 0, width: bounds.width - 10, height: bounds.height)
+                text.draw(in: textRect, withAttributes: attributes)
+            } else {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .left
+                
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .font: NSFont.systemFont(ofSize: NSFont.systemFontSize),
+                    .foregroundColor: NSColor.placeholderTextColor,
+                    .paragraphStyle: paragraphStyle
+                ]
+                
+                let placeholder = "ショートカットキー (例: ⌘ + C)"
+                let textRect = NSRect(x: 5, y: 0, width: bounds.width - 10, height: bounds.height)
+                placeholder.draw(in: textRect, withAttributes: attributes)
+            }
         }
         
         override func drawFocusRingMask() {
