@@ -74,4 +74,22 @@ class ShortcutStore: ObservableObject {
     var currentFilePath: String {
         return FileManager.ShortcutFileManager.shared.fileURL.path
     }
+    
+    func getApplicationNameSuggestions(forPrefix prefix: String, limit: Int = 5) -> [String] {
+        let lowercasedPrefix = prefix.lowercased()
+        
+        let allAppNames = Set(shortcuts.map { $0.applicationName })
+        
+        let prefixMatches = allAppNames.filter { $0.lowercased().hasPrefix(lowercasedPrefix) }
+        if prefixMatches.count >= limit {
+            return Array(prefixMatches.sorted()).prefix(limit).map { $0 }
+        }
+        
+        let containsMatches = allAppNames.filter { 
+            !$0.lowercased().hasPrefix(lowercasedPrefix) && 
+            $0.lowercased().contains(lowercasedPrefix) 
+        }
+        
+        return Array((prefixMatches + containsMatches).sorted().prefix(limit))
+    }
 }
