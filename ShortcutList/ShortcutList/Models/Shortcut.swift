@@ -86,8 +86,8 @@ class ShortcutStore: ObservableObject {
         }
 
         let containsMatches = allAppNames.filter {
-            !$0.lowercased().hasPrefix(lowercasedPrefix) &&
-            $0.lowercased().contains(lowercasedPrefix)
+            !$0.lowercased().hasPrefix(lowercasedPrefix)
+                && $0.lowercased().contains(lowercasedPrefix)
         }
 
         return Array(prefixMatches.union(containsMatches).sorted().prefix(limit))
